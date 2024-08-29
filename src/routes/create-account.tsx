@@ -1,51 +1,12 @@
 import { useState } from "react";
-import { styled } from "styled-components";
-
-const Wrapper = styled.div`
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 420px;
-    padding: 50px 0px;
-`;
-
-const Form = styled.form`
-    margin-top: 50px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-`;
-
-const Input = styled.input`
-    padding: 10px 20px;
-    border-radius: 50px;
-    border: none;
-    width: 1--%;
-    font-size: 16px;
-    &[type="submit"] {
-        cursor: pointer;
-        &:hover {
-            opacity: 0.8;
-        }
-    }
-`;
-
-const Error = styled.span`
-    font-weight: 600;
-    color: tomato;
-`;
-
-
-const Title = styled.h1`
-    fonx-size: 42px;
-`;
-
+import { Link, useNavigate } from "react-router-dom";
+import { Input, Switcher, Title, Wrapper, Form, Error } from "../components/auth-components";
+import axios from "axios";
 
 export default function CreateAccount() {
+    const navigate = useNavigate();
     const [isLoading, setLoading] = useState(false);
-    const [name, setName] = useState("");
+    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -53,7 +14,7 @@ export default function CreateAccount() {
     const onChange = (e : React.ChangeEvent<HTMLInputElement>) => {
         const {target: {name, value}} = e;
         if(name === "name") {
-            setName(value);
+            setUsername(value);
         } else if (name === "email") {
             setEmail(value);
         } else if (name === "password") {
@@ -64,11 +25,22 @@ export default function CreateAccount() {
 
     const onSubmit = async (e : React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (isLoading || name === "" || email === "" || password === "") return;
+        setError("");
+        if (isLoading || username === "" || email === "" || password === "") return;
         try {
-
+            setLoading(true);
+            const response = await axios.post("http://localhost:8080/api/v1/users/signup", {
+                username,
+                email,
+                password,
+              });
+            if (response.status === 201) { // 성공적으로 생성되었을 때
+                navigate("/"); // 회원가입 성공 후 리다이렉트
+            } else {
+                setError("Failed to create account. Please try again.");
+            } 
         } catch (e) {
-
+            setError("An error occurred during signup. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -77,13 +49,16 @@ export default function CreateAccount() {
     return( 
     <Wrapper>
         <Title>Join 𝕏</Title>
-        <Form>
-            <Input onChange={onChange} name="name" value={name} placeholder="Name" type="text" required />
+        <Form onSubmit={onSubmit}>
+            <Input onChange={onChange} name="name" value={username} placeholder="Username" type="text" required />
             <Input onChange={onChange} name="email" value={email} placeholder="Email" type="email" required />
             <Input onChange={onChange} name="password" value={password} placeholder="Password" type="password" required />
             <Input type="submit" value={ isLoading ? "Loading..." : "Create Account"}/>
         </Form>
         {error !== "" ? <Error>{error}</Error> : null}
+        <Switcher>
+            Already have an account? <Link to="/login">Log in &rarr;</Link>
+        </Switcher>
     </Wrapper>
     )
 }
