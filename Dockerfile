@@ -13,9 +13,19 @@ COPY package*.json ./
 # package.json 및 package-lock.json 파일에 명시된 의존성 패키지들을 설치
 # 패키지는 react-router-dom, http-proxy-middleware
 RUN npm install
-RUN npm i -s react-router-dom
+RUN npm i react-router-dom@6.14.2
+RUN npm i styled-reset 
+RUN npm i styled-components@6.0.7
+RUN npm i @types/styled-components -D
+RUN npm install axios
 RUN npm i http-proxy-middleware
 
+
+
+
+
+
+# npm create vite@latest
 # 호스트 머신의 현재 디렉토리 파일들을 컨테이너 내부로 전부 복사
 COPY . .
 
