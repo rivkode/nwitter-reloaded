@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import api from "../utils/api";
+import { IPost } from "./timeline";
 
 const Form = styled.form`
     display: flex;
@@ -58,15 +59,19 @@ const SubmitBtn = styled.input`
     }
 `;
 
+interface PostFormProps {
+    setTemp: React.Dispatch<React.SetStateAction<boolean>>;
+  }
 
 
-export default function PostForm() {
+export default function PostForm({ setTemp }: PostFormProps) {
     const host = "http://localhost:8080"
     const [isLoading, setLoading] = useState(false);
     const [tweet, setTweet] = useState("");
     const [file, setFile] = useState<File|null>(null);
     const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setTweet(e.target.value);
+        
     }
     const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const {files} = e.target;
@@ -82,8 +87,12 @@ export default function PostForm() {
         const response = await api.post(host + "/api/v1/posts", {
             content: tweet
         });
+        // form 에 있는 글자 없애기
+        setTweet("");
+        setTemp(true);  
 
         if (response.status == 201) {
+            setTemp(true);  // setTemp 함수를 호출해 상태 변경
             console.log("success");
         } else {
             console.log("fail");

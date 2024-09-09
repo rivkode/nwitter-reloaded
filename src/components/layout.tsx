@@ -86,6 +86,18 @@ export default function Layout() {
             </svg>
           </MenuItem>
         </Link>
+        <Link to="/chatbot">
+        <MenuItem>
+          <svg
+            fill="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path d="M12 2C6.477 2 2 6.027 2 11c0 1.717.571 3.304 1.522 4.648L2 22l5.975-2.57A10.02 10.02 0 0012 20c5.523 0 10-4.027 10-9S17.523 2 12 2zm0 2c4.418 0 8 3.148 8 7s-3.582 7-8 7c-1.611 0-3.12-.421-4.422-1.203L5.975 19l-.6-3.024A7.154 7.154 0 014 11c0-3.852 3.582-7 8-7z"></path>
+          </svg>
+        </MenuItem>
+      </Link>
         <Link to="/profile">
           <MenuItem>
             <svg

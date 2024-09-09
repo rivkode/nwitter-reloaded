@@ -9,6 +9,7 @@ import reset from "styled-reset";
 import { useEffect, useState } from "react"
 import LoadingScreen from "./components/loading-screen"
 import ProtectedRoute from "./components/protected-route"
+import Chatbot from "./components/Chatbot"
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "",
         element: <Home/>,
+      },
+      {
+        path: "chatbot",
+        element: <Chatbot/>
       },
       {
         path: "profile",

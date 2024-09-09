@@ -1,6 +1,7 @@
 import { styled } from "styled-components";
 import PostForm from "../components/post-form";
 import TimeLine from "../components/timeline";
+import { useState } from "react";
 
 const Wrapper = styled.div`
     display: grid;
@@ -10,10 +11,13 @@ const Wrapper = styled.div`
 `;
 
 export default function Home() {
+
+    const [temp, setTemp] = useState(false);
+
     return (
         <Wrapper>
-            <PostForm/>
-            <TimeLine/>
+            <PostForm setTemp={setTemp} />
+            <TimeLine temp={temp} setTemp={setTemp}/>
         </Wrapper>
     )
 }
